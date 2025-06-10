@@ -3,6 +3,8 @@ import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
 function ProductList({ onHomeClick }) {
+    const cartItems = useSelector((state) => state.cart.items);
+
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
@@ -264,6 +266,12 @@ function ProductList({ onHomeClick }) {
         }));
       };
 
+    const calculateTotalQuantity = () => {
+        return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+    };
+
+    const totalQuantity = calculateTotalQuantity();
+
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -311,7 +319,7 @@ function ProductList({ onHomeClick }) {
                             </div>
                         </div>
                     ))}
-
+                    <div className="total_cost">Total Cost: {totalQuantity}</div>
                 </div>
             ) : (
                 <CartItem onContinueShopping={handleContinueShopping} />
